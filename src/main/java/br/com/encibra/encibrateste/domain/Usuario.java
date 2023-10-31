@@ -5,10 +5,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.encibra.encibrateste.domain.enums.UserRole;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,13 +33,16 @@ public class Usuario implements UserDetails{
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)
 	private List<Senha> senhas = new ArrayList<>();
 	
+	private UserRole role;
+	
 	public Usuario() {
 	}
 	
-	public Usuario(Integer id, String nome) {
+	public Usuario(Integer id, String nome, UserRole role) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.role = role;
 	}
 	
 	public Integer getId() {
@@ -59,6 +64,14 @@ public class Usuario implements UserDetails{
 
 	public void setSenhas(List<Senha> senhas) {
 		this.senhas = senhas;
+	}
+	
+	public UserRole getRole() {
+		return role;
+	}
+
+	public void setRole(UserRole role) {
+		this.role = role;
 	}
 
 	@Override
@@ -87,43 +100,36 @@ public class Usuario implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return senhas.get(0).getValor();
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return nome;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 }
