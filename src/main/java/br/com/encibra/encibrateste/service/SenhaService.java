@@ -1,6 +1,5 @@
 package br.com.encibra.encibrateste.service;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.encibra.encibrateste.domain.Senha;
-import br.com.encibra.encibrateste.domain.Usuario;
 import br.com.encibra.encibrateste.repositories.SenhaRepository;
 
 @Service
