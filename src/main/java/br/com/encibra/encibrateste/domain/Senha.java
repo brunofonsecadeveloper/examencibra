@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "senha")
@@ -23,6 +24,7 @@ public class Senha implements Serializable{
 	private String tags;
 	private String valor;
 	
+	@NotNull(message = "A senha precisa estar diretamente vinculada a um usuário cadastrado (usuario não pode ser nulo).")
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
 	private Usuario usuario;
