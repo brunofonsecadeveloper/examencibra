@@ -12,6 +12,7 @@ import br.com.encibra.encibrateste.domain.dto.SenhaNewDTO;
 import br.com.encibra.encibrateste.domain.dto.SenhaUpdateDTO;
 import br.com.encibra.encibrateste.repositories.SenhaRepository;
 import br.com.encibra.encibrateste.service.exceptions.MaxLimitedPasswordException;
+import br.com.encibra.encibrateste.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class SenhaService {
@@ -36,6 +37,7 @@ public class SenhaService {
 	
 	public Senha findById(Integer id) {
 		Senha senha = repo.findById(id).orElse(null);
+		if (senha == null) throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Senha.class.getName());
 		senha.setValor(descriptografar(senha.getValor()));
 		return senha;
 	}
