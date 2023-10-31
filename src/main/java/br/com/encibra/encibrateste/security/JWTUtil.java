@@ -16,6 +16,7 @@ import br.com.encibra.encibrateste.domain.Usuario;
 
 @Service
 public class JWTUtil {
+	
     @Value("${jwt.secret}")
     private String secret;
 
@@ -47,6 +48,6 @@ public class JWTUtil {
     }
 
     private Instant genExpirationDate(){
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
-    }
+		return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+	}
 }
