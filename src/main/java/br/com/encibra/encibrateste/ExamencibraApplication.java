@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.encibra.encibrateste.domain.Senha;
 import br.com.encibra.encibrateste.domain.Usuario;
@@ -33,9 +34,12 @@ public class ExamencibraApplication implements CommandLineRunner {
 		Usuario usuario = new Usuario(null, "Pessoa A");
 		usuarioRepository.save(usuario);
 		
-		BasicTextEncryptor encryptor = new BasicTextEncryptor();
-        encryptor.setPassword(secret);
-		Senha senha = new Senha(null, "Descrição A", "Tags A, Tags B, Tags C", encryptor.encrypt("123456"), usuario);
+		
+		String encryptedPassword = new BCryptPasswordEncoder().encode("1234567");
+		
+//		BasicTextEncryptor encryptor = new BasicTextEncryptor();
+//        encryptor.setPassword(secret);
+		Senha senha = new Senha(null, "Descrição A", "Tags A, Tags B, Tags C", encryptedPassword, usuario);
 		senhaRepository.save(senha);		
 	}
 
