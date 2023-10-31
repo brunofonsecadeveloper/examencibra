@@ -32,7 +32,7 @@ public class SenhaService {
 		for (Senha senha : senhas) {
 			senha.setValor(descriptografar(senha.getValor()));
 		}
-		return repo.findAll();
+		return senhas;
 	}
 	
 	public Senha findById(Integer id) {
@@ -52,6 +52,8 @@ public class SenhaService {
 	
 	public Senha update(Senha newSenha) {
 		Senha senha = findById(newSenha.getId());
+		senha.setDescricao(newSenha.getDescricao());
+		senha.setTags(newSenha.getTags());
 		senha.setValor(criptografar(newSenha.getValor()));
 		return repo.save(senha);
 	}
