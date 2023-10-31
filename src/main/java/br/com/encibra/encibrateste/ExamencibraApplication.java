@@ -36,14 +36,16 @@ public class ExamencibraApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		String encryptedPassword = new BCryptPasswordEncoder().encode("1234567");
 		Usuario usuario = new Usuario(null, "Pessoa A", encryptedPassword, UserRole.ADMIN);
-		Usuario usuario2 = new Usuario(null, "Pessoa B", encryptedPassword, UserRole.ADMIN);
-		usuarioRepository.saveAll(Arrays.asList(usuario, usuario2));
+		Usuario usuario2 = new Usuario(null, "Pessoa B", encryptedPassword, UserRole.USER);
+		Usuario usuario3 = new Usuario(null, "Pessoa C", encryptedPassword, UserRole.USER);
+		usuarioRepository.saveAll(Arrays.asList(usuario, usuario2, usuario3));
 
 		BasicTextEncryptor encryptor = new BasicTextEncryptor();
 		encryptor.setPassword(secret);
 		Senha senha = new Senha(null, "Descrição A", "Tags A, Tags B, Tags C", encryptor.encrypt("1234567"), usuario);
 		Senha senha2 = new Senha(null, "Descrição B", "Tags A, Tags B, Tags C", encryptor.encrypt("1234567"), usuario2);
-		senhaRepository.saveAll(Arrays.asList(senha, senha2));
+		Senha senha3 = new Senha(null, "Descrição C", "Tags A, Tags B, Tags C", encryptor.encrypt("1234567"), usuario3);
+		senhaRepository.saveAll(Arrays.asList(senha, senha2, senha3));
 	}
 
 }
