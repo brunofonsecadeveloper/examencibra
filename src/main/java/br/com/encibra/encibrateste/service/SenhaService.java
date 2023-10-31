@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.encibra.encibrateste.domain.Senha;
+import br.com.encibra.encibrateste.domain.Usuario;
+import br.com.encibra.encibrateste.domain.dto.SenhaNewDTO;
 import br.com.encibra.encibrateste.repositories.SenhaRepository;
 
 @Service
@@ -54,5 +56,12 @@ public class SenhaService {
     public String descriptografar(String textoCriptografado) {
         return textEncryptor.decrypt(textoCriptografado);
     }
+    
+    public Senha fromNewDTO(SenhaNewDTO senhaDto) {
+		Usuario usuario = usuarioService.findById(senhaDto.getIdUsuario());
+		Senha senha = new Senha(null, senhaDto.getDescricao(), senhaDto.getTags(), senhaDto.getValor(), usuario); 
+		
+		return senha;
+	}
 	
 }
