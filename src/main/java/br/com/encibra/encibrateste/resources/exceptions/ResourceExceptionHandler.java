@@ -3,6 +3,7 @@ package br.com.encibra.encibrateste.resources.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -48,5 +49,14 @@ public class ResourceExceptionHandler extends br.com.encibra.encibrateste.resour
 		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), "Não encontrado", e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
+	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<StandardError> httpMessageNotReadable(HttpMessageNotReadableException e, HttpServletRequest request) {
+		
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Json em formato inexperado.", e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	
 	
 }
