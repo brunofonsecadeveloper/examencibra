@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.encibra.encibrateste.domain.Senha;
 import br.com.encibra.encibrateste.domain.dto.SenhaNewDTO;
+import br.com.encibra.encibrateste.domain.dto.SenhaUpdateDTO;
 import br.com.encibra.encibrateste.service.SenhaService;
 import jakarta.validation.Valid;
 
@@ -50,7 +51,8 @@ public class SenhaResource {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@RequestBody Senha senha, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody SenhaUpdateDTO senhaUpdateDto, @PathVariable Integer id) {
+		Senha senha = service.fromDTO(senhaUpdateDto);
 		senha.setId(id);
 		senha = service.update(senha);
 		return ResponseEntity.noContent().build();
