@@ -25,7 +25,7 @@ public class JWTUtil {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("auth-api")
-                    .withSubject(usuario.getUsername())
+                    .withSubject(usuario.getNome())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
             return token;
