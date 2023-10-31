@@ -38,6 +38,8 @@ public class SenhaService {
 	}
 	
 	public Senha insert(Senha senha) {
+		senha.setId(null);
+		senha.setValor(criptografar(senha.getValor()));
 		senha = repo.save(senha);
 		return senha;
 	}
@@ -52,6 +54,10 @@ public class SenhaService {
 		findById(id);
 		repo.deleteById(id);
 	}
+	
+   public String criptografar(String texto) {
+        return textEncryptor.encrypt(texto);
+    }
 	
     public String descriptografar(String textoCriptografado) {
         return textEncryptor.decrypt(textoCriptografado);
