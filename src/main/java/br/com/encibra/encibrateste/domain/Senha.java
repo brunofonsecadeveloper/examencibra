@@ -3,6 +3,8 @@ package br.com.encibra.encibrateste.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class Senha implements Serializable{
 	private String tags;
 	private String valor;
 	
+	@JsonIgnore
 	@NotNull(message = "A senha precisa estar diretamente vinculada a um usuário cadastrado (usuario não pode ser nulo).")
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
