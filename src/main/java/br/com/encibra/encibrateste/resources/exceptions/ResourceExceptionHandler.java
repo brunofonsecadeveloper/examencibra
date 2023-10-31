@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import br.com.encibra.encibrateste.service.exceptions.MaxLimitedPasswordException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 
 @ControllerAdvice
-public class ResourceExceptionHandler {
+public class ResourceExceptionHandler extends br.com.encibra.encibrateste.resources.exceptions.ExceptionHandler{
 	
 	@ExceptionHandler(MaxLimitedPasswordException.class)
 	public ResponseEntity<StandardError> maxLimitedPasswod(MaxLimitedPasswordException e, HttpServletRequest request) {
@@ -29,6 +30,15 @@ public class ResourceExceptionHandler {
 			err.addError(x.getField(), x.getDefaultMessage());
 		}		
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+	}
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<StandardError> constraintViolation(ConstraintViolationException e, HttpServletRequest request) {
+		String msg = recebeMessage(e);
+		String path = recebePath(e);
+		
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), path+" não cadastrado", msg, request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 	
 }
