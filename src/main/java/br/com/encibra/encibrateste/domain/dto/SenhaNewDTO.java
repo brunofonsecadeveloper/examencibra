@@ -20,9 +20,6 @@ public class SenhaNewDTO implements Serializable {
 	@NotBlank(message = "O campo 'valor' precisa ser preenchido.")
 	private String valor;
 	
-	@NotNull(message = "O campo 'idUsuario' precisa ser incluído.")
-	private Integer idUsuario;
-
 	public String getDescricao() {
 		return descricao;
 	}
@@ -45,14 +42,6 @@ public class SenhaNewDTO implements Serializable {
 
 	public void setValor(String valor) {
 		this.valor = valor;
-	}
-
-	public Integer getIdUsuario() {
-		return idUsuario;
-	}
-
-	public void setIdUsuario(Integer idUsuario) {
-		this.idUsuario = idUsuario;
 	}
 
 }
