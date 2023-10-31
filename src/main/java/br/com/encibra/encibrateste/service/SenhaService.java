@@ -21,9 +21,6 @@ public class SenhaService {
 	private SenhaRepository repo;
 	
 	@Autowired
-	private UsuarioService usuarioService;
-	
-	@Autowired
     private BasicTextEncryptor textEncryptor;
 	
 	
@@ -44,10 +41,8 @@ public class SenhaService {
 	
 	public List<Senha> findByUsuario() {
 		Usuario user = UserService.authenticated();
+		UserService.userIsAuthenticated(user);
 		
-		if(user == null) {
-			System.out.println("Criar exceção");
-		}
 		List<Senha> senhas = repo.findByUsuario(user);
 		for (Senha senha : senhas) {
 			senha.setValor(descriptografar(senha.getValor()));
@@ -56,6 +51,7 @@ public class SenhaService {
 	}
 	
 	public Senha insert(Senha senha) {
+		
 		if(senha.getUsuario()!=null) this.verificaLimiteSenhas(senha.getUsuario());
 		senha.setId(null);
 		senha.setValor(criptografar(senha.getValor()));
@@ -85,8 +81,9 @@ public class SenhaService {
     }
     
     public Senha fromNewDTO(SenhaNewDTO senhaDto) {
-		Usuario usuario = usuarioService.findById(senhaDto.getIdUsuario());
-		Senha senha = new Senha(null, senhaDto.getDescricao(), senhaDto.getTags(), senhaDto.getValor(), usuario); 
+    	Usuario user = UserService.authenticated();
+		UserService.userIsAuthenticated(user);
+		Senha senha = new Senha(null, senhaDto.getDescricao(), senhaDto.getTags(), senhaDto.getValor(), user); 
 		
 		return senha;
 	}
@@ -103,6 +100,5 @@ public class SenhaService {
 			+ ", Tipo: " + Senha.class.getName());
 		}
 	}
-	
 	
 }
