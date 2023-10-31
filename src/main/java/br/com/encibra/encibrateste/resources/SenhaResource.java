@@ -30,7 +30,7 @@ public class SenhaResource {
 	
 	@GetMapping
 	public ResponseEntity<List<Senha>> findAll() {
-		List<Senha> list = service.findAll();
+		List<Senha> list = service.findByUsuario();
 		return ResponseEntity.ok().body(list);
 	}
 	
