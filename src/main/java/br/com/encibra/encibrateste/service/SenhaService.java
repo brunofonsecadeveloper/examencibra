@@ -42,6 +42,19 @@ public class SenhaService {
 		return senha;
 	}
 	
+	public List<Senha> findByUsuario() {
+		Usuario user = UserService.authenticated();
+		
+		if(user == null) {
+			System.out.println("Criar exceção");
+		}
+		List<Senha> senhas = repo.findByUsuario(user);
+		for (Senha senha : senhas) {
+			senha.setValor(descriptografar(senha.getValor()));
+		}
+		return senhas;
+	}
+	
 	public Senha insert(Senha senha) {
 		if(senha.getUsuario()!=null) this.verificaLimiteSenhas(senha.getUsuario());
 		senha.setId(null);
