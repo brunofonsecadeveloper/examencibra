@@ -21,13 +21,13 @@ public class ExamencibraApplication implements CommandLineRunner {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Autowired
 	private SenhaRepository senhaRepository;
-	
+
 	@Value("${jasypt.encryptor.password}")
-    private String secret;
-	
+	private String secret;
+
 	public static void main(String[] args) {
 		SpringApplication.run(ExamencibraApplication.class, args);
 	}
@@ -37,15 +37,13 @@ public class ExamencibraApplication implements CommandLineRunner {
 		String encryptedPassword = new BCryptPasswordEncoder().encode("1234567");
 		Usuario usuario = new Usuario(null, "Pessoa A", encryptedPassword, UserRole.ADMIN);
 		Usuario usuario2 = new Usuario(null, "Pessoa B", encryptedPassword, UserRole.ADMIN);
-		usuarioRepository.saveAll(Arrays.asList(usuario,usuario2));
-		
-		
-		
+		usuarioRepository.saveAll(Arrays.asList(usuario, usuario2));
+
 		BasicTextEncryptor encryptor = new BasicTextEncryptor();
-        encryptor.setPassword(secret);
+		encryptor.setPassword(secret);
 		Senha senha = new Senha(null, "Descrição A", "Tags A, Tags B, Tags C", encryptor.encrypt("1234567"), usuario);
 		Senha senha2 = new Senha(null, "Descrição B", "Tags A, Tags B, Tags C", encryptor.encrypt("1234567"), usuario2);
-		senhaRepository.saveAll(Arrays.asList(senha, senha2));		
+		senhaRepository.saveAll(Arrays.asList(senha, senha2));
 	}
 
 }

@@ -33,7 +33,11 @@ public class SenhaService {
 	}
 	
 	public Senha findById(Integer id) {
+		Usuario user = UserService.authenticated();
+		UserService.userIsAuthenticated(user);
+		
 		Senha senha = repo.findById(id).orElse(null);
+		if(senha.getUsuario().getId() != user.getId()) senha = null;
 		if (senha == null) throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Senha.class.getName());
 		senha.setValor(descriptografar(senha.getValor()));
 		return senha;
