@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.encibra.encibrateste.domain.Senha;
 import br.com.encibra.encibrateste.domain.Usuario;
 import br.com.encibra.encibrateste.domain.dto.SenhaNewDTO;
+import br.com.encibra.encibrateste.domain.dto.SenhaUpdateDTO;
 import br.com.encibra.encibrateste.repositories.SenhaRepository;
 
 @Service
@@ -34,6 +35,7 @@ public class SenhaService {
 	
 	public Senha findById(Integer id) {
 		Senha senha = repo.findById(id).orElse(null);
+		senha.setValor(descriptografar(senha.getValor()));
 		return senha;
 	}
 	
@@ -46,8 +48,8 @@ public class SenhaService {
 	
 	public Senha update(Senha newSenha) {
 		Senha senha = findById(newSenha.getId());
-		newSenha.setUsuario(usuarioService.findById(senha.getUsuario().getId()));
-		return repo.save(newSenha);
+		senha.setValor(criptografar(newSenha.getValor()));
+		return repo.save(senha);
 	}
 
 	public void delete(Integer id) {
@@ -69,5 +71,12 @@ public class SenhaService {
 		
 		return senha;
 	}
+    
+	public Senha fromDTO(SenhaUpdateDTO senhaDto) {
+		Senha senha = new Senha(null, senhaDto.getDescricao(), senhaDto.getTags(), senhaDto.getValor(), null); 
+		
+		return senha;
+	}
+	
 	
 }
