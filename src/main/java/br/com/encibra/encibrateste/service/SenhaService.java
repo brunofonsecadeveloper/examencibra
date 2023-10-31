@@ -11,6 +11,7 @@ import br.com.encibra.encibrateste.domain.Usuario;
 import br.com.encibra.encibrateste.domain.dto.SenhaNewDTO;
 import br.com.encibra.encibrateste.domain.dto.SenhaUpdateDTO;
 import br.com.encibra.encibrateste.repositories.SenhaRepository;
+import br.com.encibra.encibrateste.service.exceptions.MaxLimitedPasswordException;
 
 @Service
 public class SenhaService {
@@ -40,6 +41,7 @@ public class SenhaService {
 	}
 	
 	public Senha insert(Senha senha) {
+		if(senha.getUsuario()!=null) this.verificaLimiteSenhas(senha.getUsuario());
 		senha.setId(null);
 		senha.setValor(criptografar(senha.getValor()));
 		senha = repo.save(senha);
@@ -76,6 +78,13 @@ public class SenhaService {
 		Senha senha = new Senha(null, senhaDto.getDescricao(), senhaDto.getTags(), senhaDto.getValor(), null); 
 		
 		return senha;
+	}
+	
+	private void verificaLimiteSenhas(Usuario usuario) {
+		if(usuario.getSenhas().size()>19) {
+			throw new MaxLimitedPasswordException("A quantidade máxima que o usuário pode cadastrar é de 20 senhas. " + usuario.getId()
+			+ ", Tipo: " + Senha.class.getName());
+		}
 	}
 	
 	
