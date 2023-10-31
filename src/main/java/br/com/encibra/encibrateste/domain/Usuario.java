@@ -18,7 +18,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name="usuario")
@@ -32,7 +31,6 @@ public class Usuario implements UserDetails{
 	private String password;
 	
 	@JsonIgnore
-	@Transient
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)
 	private List<Senha> senhas = new ArrayList<>();
 	

@@ -11,6 +11,7 @@ import br.com.encibra.encibrateste.domain.Usuario;
 import br.com.encibra.encibrateste.domain.dto.SenhaNewDTO;
 import br.com.encibra.encibrateste.domain.dto.SenhaUpdateDTO;
 import br.com.encibra.encibrateste.repositories.SenhaRepository;
+import br.com.encibra.encibrateste.repositories.UsuarioRepository;
 import br.com.encibra.encibrateste.service.exceptions.MaxLimitedPasswordException;
 import br.com.encibra.encibrateste.service.exceptions.ObjectNotFoundException;
 
@@ -19,6 +20,9 @@ public class SenhaService {
 
 	@Autowired
 	private SenhaRepository repo;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 	
 	@Autowired
     private BasicTextEncryptor textEncryptor;
@@ -37,9 +41,10 @@ public class SenhaService {
 		UserService.userIsAuthenticated(user);
 		
 		Senha senha = repo.findById(id).orElse(null);
-		if(senha.getUsuario().getId() != user.getId()) senha = null;
+		if(senha != null && senha.getUsuario().getId() != user.getId()) senha = null;
 		if (senha == null) throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Senha.class.getName());
 		senha.setValor(descriptografar(senha.getValor()));
+		
 		return senha;
 	}
 	
@@ -55,7 +60,6 @@ public class SenhaService {
 	}
 	
 	public Senha insert(Senha senha) {
-		
 		if(senha.getUsuario()!=null) this.verificaLimiteSenhas(senha.getUsuario());
 		senha.setId(null);
 		senha.setValor(criptografar(senha.getValor()));
@@ -87,6 +91,7 @@ public class SenhaService {
     public Senha fromNewDTO(SenhaNewDTO senhaDto) {
     	Usuario user = UserService.authenticated();
 		UserService.userIsAuthenticated(user);
+		user = usuarioRepository.findById(user.getId()).get();
 		Senha senha = new Senha(null, senhaDto.getDescricao(), senhaDto.getTags(), senhaDto.getValor(), user); 
 		
 		return senha;
