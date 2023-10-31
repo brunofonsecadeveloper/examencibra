@@ -28,6 +28,7 @@ public class Usuario implements UserDetails{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private String password;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)
@@ -38,10 +39,11 @@ public class Usuario implements UserDetails{
 	public Usuario() {
 	}
 	
-	public Usuario(Integer id, String nome, UserRole role) {
+	public Usuario(Integer id, String nome, String password, UserRole role) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.password = password;
 		this.role = role;
 	}
 	
@@ -58,6 +60,10 @@ public class Usuario implements UserDetails{
 		this.nome = nome;
 	}
 	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public List<Senha> getSenhas() {
 		return senhas;
 	}
@@ -100,12 +106,13 @@ public class Usuario implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 
 	@Override
 	public String getPassword() {
-		return senhas.get(0).getValor();
+		return password;
 	}
 
 	@Override
