@@ -9,9 +9,6 @@ public class SenhaUpdateDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	
-	@NotNull(message = "O campo 'id' precisa ser incluído.")
-	private Integer id;
-	
 	@NotNull(message = "O campo 'descricao' precisa ser incluído.")
 	@NotBlank(message = "O campo 'descricao' precisa ser preenchido.")
 	private String descricao;
@@ -24,14 +21,6 @@ public class SenhaUpdateDTO implements Serializable {
 	@NotBlank(message = "O campo 'valor' precisa ser preenchido.")
 	private String valor;
 	
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
