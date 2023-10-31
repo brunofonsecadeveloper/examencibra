@@ -1,11 +1,14 @@
 package br.com.encibra.encibrateste.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.encibra.encibrateste.domain.Senha;
+import br.com.encibra.encibrateste.domain.Usuario;
 import br.com.encibra.encibrateste.repositories.SenhaRepository;
 
 @Service
@@ -17,8 +20,15 @@ public class SenhaService {
 	@Autowired
 	private UsuarioService usuarioService;
 	
+	@Autowired
+    private BasicTextEncryptor textEncryptor;
+	
 	
 	public List<Senha> findAll() {
+		List<Senha> senhas = repo.findAll();
+		for (Senha senha : senhas) {
+			senha.setValor(descriptografar(senha.getValor()));
+		}
 		return repo.findAll();
 	}
 	
@@ -42,5 +52,9 @@ public class SenhaService {
 		findById(id);
 		repo.deleteById(id);
 	}
+	
+    public String descriptografar(String textoCriptografado) {
+        return textEncryptor.decrypt(textoCriptografado);
+    }
 	
 }
