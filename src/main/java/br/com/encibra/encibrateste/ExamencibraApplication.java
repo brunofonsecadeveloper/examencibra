@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.encibra.encibrateste.domain.Senha;
 import br.com.encibra.encibrateste.domain.Usuario;
+import br.com.encibra.encibrateste.domain.enums.UserRole;
 import br.com.encibra.encibrateste.repositories.SenhaRepository;
 import br.com.encibra.encibrateste.repositories.UsuarioRepository;
 
@@ -31,15 +32,15 @@ public class ExamencibraApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Usuario usuario = new Usuario(null, "Pessoa A");
+		String encryptedPassword = new BCryptPasswordEncoder().encode("1234567");
+		Usuario usuario = new Usuario(null, "Pessoa A", encryptedPassword, UserRole.ADMIN);
 		usuarioRepository.save(usuario);
 		
 		
-		String encryptedPassword = new BCryptPasswordEncoder().encode("1234567");
 		
-//		BasicTextEncryptor encryptor = new BasicTextEncryptor();
-//        encryptor.setPassword(secret);
-		Senha senha = new Senha(null, "Descrição A", "Tags A, Tags B, Tags C", encryptedPassword, usuario);
+		BasicTextEncryptor encryptor = new BasicTextEncryptor();
+        encryptor.setPassword(secret);
+		Senha senha = new Senha(null, "Descrição A", "Tags A, Tags B, Tags C", encryptor.encrypt("1234567"), usuario);
 		senhaRepository.save(senha);		
 	}
 
