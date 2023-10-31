@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.encibra.encibrateste.domain.Senha;
+import br.com.encibra.encibrateste.domain.dto.SenhaNewDTO;
 import br.com.encibra.encibrateste.service.SenhaService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/senhas")
@@ -38,8 +40,9 @@ public class SenhaResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Senha senha) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody SenhaNewDTO senhaNewDto) {
 		
+		Senha senha = service.fromNewDTO(senhaNewDto);
 		senha = service.insert(senha);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(senha.getId()).toUri();
 		
