@@ -1,5 +1,7 @@
 package br.com.encibra.encibrateste;
 
+import java.util.Arrays;
+
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,14 +36,16 @@ public class ExamencibraApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		String encryptedPassword = new BCryptPasswordEncoder().encode("1234567");
 		Usuario usuario = new Usuario(null, "Pessoa A", encryptedPassword, UserRole.ADMIN);
-		usuarioRepository.save(usuario);
+		Usuario usuario2 = new Usuario(null, "Pessoa B", encryptedPassword, UserRole.ADMIN);
+		usuarioRepository.saveAll(Arrays.asList(usuario,usuario2));
 		
 		
 		
 		BasicTextEncryptor encryptor = new BasicTextEncryptor();
         encryptor.setPassword(secret);
 		Senha senha = new Senha(null, "Descrição A", "Tags A, Tags B, Tags C", encryptor.encrypt("1234567"), usuario);
-		senhaRepository.save(senha);		
+		Senha senha2 = new Senha(null, "Descrição B", "Tags A, Tags B, Tags C", encryptor.encrypt("1234567"), usuario2);
+		senhaRepository.saveAll(Arrays.asList(senha, senha2));		
 	}
 
 }
